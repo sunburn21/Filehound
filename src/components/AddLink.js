@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import uuid from "uuid";
 import moment from "moment";
 import { connect } from "react-redux";
-import { addFolder } from "../actions/folders";
+import { startAddFolder } from "../actions/folders";
 import AutoSuggestBox from "./AutosuggestBox";
 
 class AddLink extends Component {
@@ -50,14 +50,14 @@ class AddLink extends Component {
         })
         .some(n => n === this.state.folder || this.state.folder === "");
       if (!folderCheck) {
-        this.props.dispatch(addFolder(this.state.folder));
+        this.props.dispatch(startAddFolder({ folderName: this.state.folder }));
       }
       this.props.onSubmit({
-        id: uuid(),
         createdDate: moment().unix(),
         link: this.state.link,
         title: !this.state.title ? this.state.link : this.state.title,
-        folder: this.state.folder
+        folder: this.state.folder,
+        id: ""
       });
     }
   };

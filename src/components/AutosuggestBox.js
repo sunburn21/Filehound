@@ -80,10 +80,11 @@ export default class AutoSuggestBox extends Component {
     if (this.state.selected) {
       autoComplete = (
         <div style={styleSelect}>
-          {this.matches(this.state.input).map(option => {
+          {this.matches(this.state.input).map((option, i) => {
             return (
               <div
                 style={styleOptions}
+                key={i}
                 onClick={() => this.handleClick(option.folderName)}
               >
                 {option.folderName}

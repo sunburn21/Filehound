@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Genre from "./Genre";
-import { addKeyword } from "../actions/keywords";
+import { startAddKeyword, startEditKeyword } from "../actions/keywords";
+import moment from "moment";
 // import { clearGenres } from "../actions/genres";
 // import keywords from "../reducers/keywords";
 // import SearchBox from "./SearchBox";
@@ -43,9 +44,11 @@ class Search extends Component {
 
   matches(keyword) {
     const regex = new RegExp(keyword, "i");
-    return this.props.keywords.filter(function(option) {
-      return option.match(regex) && option !== keyword;
-    });
+    return this.props.keywords
+      .map(keyword => keyword.keyword)
+      .filter(function(option) {
+        return option.match(regex) && option !== keyword;
+      });
   }
 
   onInputFocus(show) {
@@ -74,11 +77,34 @@ class Search extends Component {
   };
   onSubmit = () => {
     const q = this.createQuery();
-    // console.log(q);
-    this.props.dispatch(addKeyword(this.state.keyword));
+    let eid = "",
+      count = 0;
     const searchKey = this.state.keyword.split(" ").join("+");
-    window.open(googleSearchQuery + searchKey + "+" + q);
+    const finalLink = googleSearchQuery + searchKey + "+" + q;
+    window.open(finalLink);
     this.props.history.push("/Collection");
+    const check = this.props.keywords.some(k => {
+      if (k.keyword === this.state.keyword) {
+        eid = k.id;
+        count = k.count + 1;
+        console.log(eid);
+      }
+      return k.keyword === this.state.keyword;
+    });
+    if (check) {
+      console.log(this.props.keywords);
+      this.props.dispatch(startEditKeyword(eid, count));
+    } else {
+      // console.log(this.props.keywords);
+      this.props.dispatch(
+        startAddKeyword({
+          searchedDate: moment().unix(),
+          keyword: this.state.keyword,
+          count: 0,
+          link: finalLink
+        })
+      );
+    }
   };
   render() {
     let styleSelect = {

@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import LoaderHoc from "./HOC/LoaderHoc";
+import { startSetLinks } from "../actions/links";
 // import Checkbox from "./Checkbox";
 // import { Link } from "react-router-dom";
 
@@ -27,4 +29,4 @@ const Collection = props => {
   );
 };
 
-export default connect()(Collection);
+export default connect()(LoaderHoc(Collection));

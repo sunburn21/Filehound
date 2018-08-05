@@ -22,7 +22,11 @@ class LinksCollectionFilters extends Component {
     const folderOptions = this.props.folders
       .filter(folder => folder.folderName !== "All")
       .map((folder, i) => {
-        return <option value={folder.folderName}>{folder.folderName}</option>;
+        return (
+          <option key={i} value={folder.folderName}>
+            {folder.folderName}
+          </option>
+        );
       });
     folderOptions.unshift(<option value="All">All</option>);
     return (
