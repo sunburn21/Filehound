@@ -44,5 +44,5 @@ class App extends Component {
     );
   }
 }
-
+//exporting the app
 export { App as default, store };
